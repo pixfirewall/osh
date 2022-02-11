@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { prisma, Role } from '../db';
 import router from '../server/router';
-import { products, users } from '../../prisma/rubbishData';
+import { products, users } from '../../prisma/mockData';
 import express from 'express';
 import { userService } from '../services';
 

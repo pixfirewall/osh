@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const { users, products } = require('./rubbishData');
+const { users, products } = require('./mockData');
 
 const prisma = new PrismaClient();
 
