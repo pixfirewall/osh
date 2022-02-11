@@ -1,4 +1,5 @@
 import { prisma, Prisma, Product } from '../db';
+import logger from '../../logger';
 
 export const productService = {
   /**
@@ -7,7 +8,7 @@ export const productService = {
    */
   create: async ({ title, description, brand, type, price, discount, image }: NewProduct) => {
     try {
-      const result = await prisma.product.create({
+      const product = await prisma.product.create({
         data: {
           title,
           description,
@@ -18,7 +19,8 @@ export const productService = {
           image: JSON.stringify(image),
         },
       });
-      return result;
+      logger.info('create a new product', { product });
+      return product;
     } catch (e) {
       throw e;
     }
@@ -86,6 +88,7 @@ export const productService = {
   updateProductById: async (id: number, data: Product) => {
     try {
       const product = await prisma.product.update({ where: { id }, data });
+      logger.info('update product by id', { product });
       delete product.visited;
       product.image = JSON.parse(product.image);
       return product;

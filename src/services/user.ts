@@ -17,7 +17,7 @@ export const userService = {
     const password = await userService.generateHash(pwd);
 
     try {
-      const result = await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           name,
           email,
@@ -25,7 +25,8 @@ export const userService = {
           role,
         },
       });
-      return result;
+      logger.info('update product by id', { user });
+      return user;
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         /**

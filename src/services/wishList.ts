@@ -1,4 +1,5 @@
 import { prisma, Prisma } from '../db';
+import logger from '../../logger';
 
 export const wishlistService = {
   /**
@@ -13,7 +14,8 @@ export const wishlistService = {
    */
   addToWishList: async (userId: number, productId: number) => {
     try {
-      await prisma.wishlist.create({ data: { userId, productId } });
+      const wishlist = await prisma.wishlist.create({ data: { userId, productId } });
+      logger.info('update product by id', { wishlist });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         /**
