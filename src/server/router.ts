@@ -3,6 +3,8 @@ import cors from 'cors';
 import { athentication, bodyValidate, httpLogger } from '../middlewares';
 import health from '../routes/health';
 import user from '../routes/user';
+import products from '../routes/product';
+import wishList from '../routes/wishList';
 
 export default (app) => {
   app.use(cors());
@@ -14,6 +16,8 @@ export default (app) => {
   /* below is the routing section */
   app.use('/health', health);
   app.use('/users', user);
+  app.use('/products', products);
+  app.use('/wishlist', wishList);
 
   return app;
 };

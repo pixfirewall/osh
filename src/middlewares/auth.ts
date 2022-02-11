@@ -40,3 +40,20 @@ export const authorization = (role: Role) => (req: Request, res: Response, next:
   }
   return next();
 };
+
+/**
+ *
+ * @description this function will check and cinfirm that the user is logged in.
+ */
+export const checkForLogin = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.userInfo) {
+    const { code, message } = unauthorizedError('You are not logged in.');
+    return res.status(code).send(message);
+  }
+  return next();
+};
+
+export type UserInfo = {
+  email: string;
+  role: Role;
+};
