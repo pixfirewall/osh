@@ -1,0 +1,709 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Online Shop API",
+    "description": "Online Shop API is an online shopping festival."
+  },
+  "host": "localhost:8010",
+  "basePath": "/",
+  "tags": [],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "description": "Health check endpoint.",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Get liast of all products.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully done.",
+            "schema": {
+              "$ref": "#/definitions/productsResponse"
+            }
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/serverError"
+            },
+            "description": "Unknown error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Create a new product.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Add new product",
+            "schema": {
+              "$ref": "#/definitions/addProduct"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully done.",
+            "schema": {
+              "$ref": "#/definitions/userResponse"
+            }
+          },
+          "406": {
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            },
+            "description": "Validation error."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/serverError"
+            },
+            "description": "Unknown error."
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/products/most-viewed": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "list the most visited products.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "type": "string"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Page size",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully done",
+            "schema": {
+              "$ref": "#/definitions/productsResponse"
+            }
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/serverError"
+            },
+            "description": "Unknown error"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Update a product by id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Product id"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Product data",
+            "schema": {
+              "$ref": "#/definitions/addProduct"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully done.",
+            "schema": {
+              "$ref": "#/definitions/productResponse"
+            }
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/productNotFound"
+            },
+            "description": "Product Not Found."
+          },
+          "406": {
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            },
+            "description": "Validation error."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Get product by id.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Product id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully done.",
+            "schema": {
+              "$ref": "#/definitions/loginResponse"
+            }
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/serverError"
+            },
+            "description": "Unknown error."
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Add new user",
+            "schema": {
+              "$ref": "#/definitions/addUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully done.",
+            "schema": {
+              "$ref": "#/definitions/userResponse"
+            }
+          },
+          "406": {
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            },
+            "description": "Validation error."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/serverError"
+            },
+            "description": "Unknown error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Login",
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully done.",
+            "schema": {
+              "$ref": "#/definitions/loginResponse"
+            }
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/unauthorizedError"
+            },
+            "description": "Not found error."
+          },
+          "406": {
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            },
+            "description": "Validation error."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/serverError"
+            },
+            "description": "Unknown error"
+          }
+        }
+      }
+    },
+    "/wishlist": {
+      "get": {
+        "tags": [
+          "Wish List"
+        ],
+        "description": "Get list of Wish List.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/serverError"
+            },
+            "description": "Unknown error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Wish List"
+        ],
+        "description": "Add product to Wish List.",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "Add new wish list",
+            "schema": {
+              "$ref": "#/definitions/addWishList"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully done.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "boolean",
+                  "example": true
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "406": {
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            },
+            "description": "Validation error."
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/serverError"
+            },
+            "description": "Invalid Data"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/wishlist/{id}": {
+      "delete": {
+        "tags": [
+          "Wish List"
+        ],
+        "description": "Delete product from Wish List.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Adelete wish list"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully done.",
+            "schema": {
+              "$ref": "#/definitions/deleteWishlistResponse"
+            }
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/serverError"
+            },
+            "description": "Invalid Data"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "addUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Amir Hodaee"
+        },
+        "email": {
+          "type": "string",
+          "example": "amir@snappymob.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Admin@123"
+        }
+      }
+    },
+    "addWishList": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "amir@snappymob.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Admin@123"
+        }
+      }
+    },
+    "addProduct": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Shoes"
+        },
+        "description": {
+          "type": "string",
+          "example": "a bran new shoes for men"
+        },
+        "brand": {
+          "type": "string",
+          "example": "H&M"
+        },
+        "type": {
+          "type": "string",
+          "example": "Clothing"
+        },
+        "price": {
+          "type": "number",
+          "example": 1200
+        },
+        "discount": {
+          "type": "number",
+          "example": 15.99
+        },
+        "image": {
+          "type": "array",
+          "example": [
+            "https://picsum.photos/200",
+            "https://picsum.photos/200",
+            "https://picsum.photos/200"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "productResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "title": {
+          "type": "string",
+          "example": "Shoes"
+        },
+        "description": {
+          "type": "string",
+          "example": "a bran new shoes for men"
+        },
+        "brand": {
+          "type": "string",
+          "example": "H&M"
+        },
+        "type": {
+          "type": "string",
+          "example": "Clothing"
+        },
+        "price": {
+          "type": "number",
+          "example": 1200
+        },
+        "discount": {
+          "type": "number",
+          "example": 15.99
+        },
+        "image": {
+          "type": "array",
+          "example": [
+            "https://picsum.photos/200",
+            "https://picsum.photos/200",
+            "https://picsum.photos/200"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "productsResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "title": {
+                "type": "string",
+                "example": "Shoes"
+              },
+              "description": {
+                "type": "string",
+                "example": "a bran new shoes for men"
+              },
+              "brand": {
+                "type": "string",
+                "example": "H&M"
+              },
+              "type": {
+                "type": "string",
+                "example": "Clothing"
+              },
+              "price": {
+                "type": "number",
+                "example": 1200
+              },
+              "discount": {
+                "type": "number",
+                "example": 15.99
+              },
+              "image": {
+                "type": "array",
+                "example": [
+                  "https://picsum.photos/200",
+                  "https://picsum.photos/200",
+                  "https://picsum.photos/200"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "page": {
+          "type": "number",
+          "example": 1
+        },
+        "totalPage": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "deleteWishlistResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 6
+        },
+        "userId": {
+          "type": "number",
+          "example": 32
+        },
+        "productId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "userResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "loginResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQyOTE1NDAsImRhdGEiOnsiZW1haWwiOiJhbWlyQHNuYXBweW1vYi5jb20ifSwiaWF0IjoxNjQ0Mjg3OTQwfQ.qBWLH4kK-NNvAIa78yMFoNkfm9DIgPg8eilE1PU1xGk"
+        }
+      }
+    },
+    "productNotFound": {
+      "type": "object",
+      "properties": {
+        "error_code": {
+          "type": "string",
+          "example": "DATA_NOT_FOUND_ERROR"
+        },
+        "message": {
+          "type": "string",
+          "example": "product id x is not valid."
+        }
+      }
+    },
+    "notFoundError": {
+      "type": "object",
+      "properties": {
+        "error_code": {
+          "type": "string",
+          "example": "DATA_NOT_FOUND_ERROR"
+        },
+        "message": {
+          "type": "string",
+          "example": "Could not find any data"
+        }
+      }
+    },
+    "serverError": {
+      "type": "object",
+      "properties": {
+        "error_code": {
+          "type": "string",
+          "example": "SERVER_ERROR"
+        },
+        "message": {
+          "type": "string",
+          "example": "Unknown error"
+        }
+      }
+    },
+    "validationError": {
+      "type": "object",
+      "properties": {
+        "error_code": {
+          "type": "string",
+          "example": "VALIDATION_ERROR"
+        },
+        "message": {
+          "type": "string",
+          "example": "Data is not valid."
+        }
+      }
+    },
+    "unauthorizedError": {
+      "type": "object",
+      "properties": {
+        "error_code": {
+          "type": "string",
+          "example": "UNAUTHORIZED_ERROR"
+        },
+        "message": {
+          "type": "string",
+          "example": "You don't have access to this resource."
+        }
+      }
+    }
+  }
+}
